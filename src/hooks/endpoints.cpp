@@ -1,26 +1,26 @@
 #include <hooks/hooks.hpp>
 #include <hooks/endpoints.hpp>
 
-IDirect3D9* __stdcall hooks::endpoints::direct_3d_create_9(std::uint32_t sdk_version) {
-  const auto result = hooks::direct_3d_create_9.get_trampoline<decltype(&hooks::endpoints::direct_3d_create_9)>()(sdk_version);
+IDirect3D9* __stdcall hooks::endpoints::Direct3DCreate9(uint32_t sdk_version) {
+  const auto result = hooks::direct_3d_create_9.GetTrampoline<decltype(&hooks::endpoints::Direct3DCreate9)>()(sdk_version);
 
   if (result != nullptr)
-    hooks::create_device.install_in_vtable(result, 16, &hooks::endpoints::create_device);
+    hooks::create_device.InstallInVMT(result, 16, &hooks::endpoints::CreateDevice);
 
   return result;
 }
 
-HRESULT __stdcall hooks::endpoints::create_device(IDirect3D9* _this, std::uint32_t adapter, D3DDEVTYPE device_type, HWND focus_window, std::uint32_t behavior_flags, D3DPRESENT_PARAMETERS* presentation_parameters, IDirect3DDevice9** returned_device_interface) {
-  const auto result = hooks::create_device.get_trampoline<decltype(&hooks::endpoints::create_device)>()(_this, adapter, device_type, focus_window, behavior_flags, presentation_parameters, returned_device_interface);
+HRESULT __stdcall hooks::endpoints::CreateDevice(IDirect3D9* _this, uint32_t adapter, D3DDEVTYPE device_type, HWND focus_window, uint32_t behavior_flags, D3DPRESENT_PARAMETERS* presentation_parameters, IDirect3DDevice9** returned_device_interface) {
+  const auto result = hooks::create_device.GetTrampoline<decltype(&hooks::endpoints::CreateDevice)>()(_this, adapter, device_type, focus_window, behavior_flags, presentation_parameters, returned_device_interface);
 
   if (SUCCEEDED(result))
-    hooks::reset.install_in_vtable(*returned_device_interface, 16, &hooks::endpoints::reset);
+    hooks::reset.InstallInVMT(*returned_device_interface, 16, &hooks::endpoints::Reset);
 
   return result;
 }
 
-HRESULT __stdcall hooks::endpoints::reset(IDirect3DDevice9* _this, D3DPRESENT_PARAMETERS* presentation_parameters) {
-  const auto trampoline = hooks::reset.get_trampoline<decltype(&hooks::endpoints::reset)>();
+HRESULT __stdcall hooks::endpoints::Reset(IDirect3DDevice9* _this, D3DPRESENT_PARAMETERS* presentation_parameters) {
+  const auto trampoline = hooks::reset.GetTrampoline<decltype(&hooks::endpoints::Reset)>();
 
   if (presentation_parameters == nullptr || presentation_parameters->Windowed)
     return trampoline(_this, presentation_parameters);
