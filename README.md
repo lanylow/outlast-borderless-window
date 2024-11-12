@@ -8,7 +8,7 @@ Free and open-source mod for Outlast that adds the borderless window funcionalit
 The game often completely freezes when Alt-Tabbing in fullscreen, which is especially annoying when trying to follow guides online. This mod solves that issue.
 
 ### How do I install it?
-1. Download the archive from the [latest release](https://github.com/lanylow/genshin-utility/releases).
+1. Download the archive from the [latest release](https://github.com/lanylow/outlast-borderless-window/releases).
 2. Open the directory where Outlast is installed.
 3. Open the archive you downloaded.
 4. If you're playing on the 64-bit version of the game, extract `64\dinput8.dll` into `Outlast\Binaries\Win64`, otherwise extract `32\dinput8.dll` into `Outlast\Binaries\Win32`.
